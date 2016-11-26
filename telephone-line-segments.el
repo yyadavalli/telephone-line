@@ -21,6 +21,19 @@
 ;; To create your own, look at the functions defined in telephone-line-utils.el
 
 ;;; Code:
+(declare-function evil-visual-state-p "evil")
+(declare-function flycheck-count-errors "flycheck")
+(declare-function flycheck-list-errors "flycheck")
+(declare-function nyan-create "nyan-mode")
+(declare-function winum-get-number "winum")
+(declare-function winum-get-number-string "winum")
+(declare-function wg-mode-line-string "workgroups2")
+
+(defvar evil-state)
+(defvar evil-visual-selection)
+(defvar flycheck-current-errors)
+(defvar flycheck-last-status-change)
+(defvar xah-fly-insert-state-q)
 
 (require 'telephone-line-utils)
 

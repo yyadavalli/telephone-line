@@ -22,13 +22,16 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;;
+
 ;; Telephone Line is a library for customizing the mode-line that is
 ;; based on the Vim Powerline.  Themes can be created by customizing
 ;; the telephone-line-lhs and telephone-line-rhs variables.
-;;
 
 ;;; Code:
+
+(defvar evil-state)
+(defvar ryo-modal-mode)
+(defvar xah-fly-insert-state-q)
 
 (require 'telephone-line-separators)
 (require 'telephone-line-segments)
@@ -88,7 +91,7 @@
 
 (defface telephone-line-evil-visual
   '((t (:background "#FABD2F" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Visual{,-Block,-Line} state (yellow)."
+  "Face used in evil color-coded segments when in Visual states (yellow)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-replace
@@ -161,14 +164,16 @@ background color from the paired sym."
   :group 'telephone-line
   :type 'symbol)
 
-(defcustom telephone-line-secondary-left-separator 'telephone-line-abs-hollow-left
+(defcustom telephone-line-secondary-left-separator
+  'telephone-line-abs-hollow-left
   "The secondary separator to use on the left-hand side.
 
 Secondary separators do not incur a background color change."
   :group 'telephone-line
   :type 'symbol)
 
-(defcustom telephone-line-secondary-right-separator 'telephone-line-abs-hollow-right
+(defcustom telephone-line-secondary-right-separator
+  'telephone-line-abs-hollow-right
   "The secondary separator to use on the right-hand side.
 
 Secondary separators do not incur a background color change."
@@ -237,21 +242,22 @@ Secondary separators do not incur a background color change."
 
 ;;TODO: Clean this up
 (defun telephone-line--separator-generator (primary-sep)
+  "Generate PRIMARY-SEP."
   (lambda (acc e)
     (let ((cur-color-sym (car e))
           (prev-color-sym (cdr acc))
           (cur-subsegments (cdr e))
           (accumulated-segments (car acc)))
-
       (cons
        (if accumulated-segments
            (cl-list*
-            cur-subsegments ;New segment
+            cur-subsegments             ;New segment
             ;; Separator
-            `(:eval (telephone-line-separator-render ,primary-sep
-                                       (telephone-line-face-map ',prev-color-sym)
-                                       (telephone-line-face-map ',cur-color-sym)))
-            accumulated-segments) ;Old segments
+            `(:eval (telephone-line-separator-render
+                     ,primary-sep
+                     (telephone-line-face-map ',prev-color-sym)
+                     (telephone-line-face-map ',cur-color-sym)))
+            accumulated-segments)       ;Old segments
          (list cur-subsegments))
        cur-color-sym))))
 
@@ -374,24 +380,29 @@ separators, as they are conditional, are evaluated on-the-fly."
   :group 'telephone-line)
 
 (defun telephone-line--generate-mode-line-lhs ()
+  "Generate left hand segment of the modeline."
   (telephone-line-add-separators telephone-line-lhs
-                   telephone-line-primary-left-separator
-                   telephone-line-secondary-left-separator))
+                                 telephone-line-primary-left-separator
+                                 telephone-line-secondary-left-separator))
 
 (defun telephone-line--generate-mode-line-center ()
-  (append (telephone-line-add-separators telephone-line-center-lhs
-                           telephone-line-primary-right-separator
-                           telephone-line-secondary-right-separator)
-          (telephone-line-add-separators telephone-line-center-rhs
-                           telephone-line-primary-left-separator
-                           telephone-line-secondary-left-separator)))
+  "Generate centr segment of the modeline."
+  (append
+   (telephone-line-add-separators telephone-line-center-lhs
+                                  telephone-line-primary-right-separator
+                                  telephone-line-secondary-right-separator)
+   (telephone-line-add-separators telephone-line-center-rhs
+                                  telephone-line-primary-left-separator
+                                  telephone-line-secondary-left-separator)))
 
 (defun telephone-line--generate-mode-line-rhs ()
+  "Generate right hand segment of the modeline."
   (telephone-line-add-separators telephone-line-rhs
-                   telephone-line-primary-right-separator
-                   telephone-line-secondary-right-separator))
+                                 telephone-line-primary-right-separator
+                                 telephone-line-secondary-right-separator))
 
 (defun telephone-line--generate-mode-line ()
+  "Generae the complete modeline."
   `(,@(telephone-line--generate-mode-line-lhs)
     (:eval (when (or telephone-line-center-lhs telephone-line-center-rhs)
              (telephone-line-fill

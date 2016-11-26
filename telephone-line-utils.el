@@ -49,6 +49,15 @@
     (let ((x (assq key alist)))
       (if x (cdr x) default))))
 
+(defun telephone-line-trim (string)
+  "Ad-hoc string trim to remove spaces up to the first brace from STRING."
+  (let ((s (if (string-match "[\])]?[ ]*\\'" string)
+               (replace-match "" t t string)
+             string)))
+    (if (string-match "\\`[ ]*[\[(]?" s)
+        (replace-match "" t t s)
+      s)))
+
 (defun telephone-line-create-axis (length)
   "Create an axis of length LENGTH from -((LENGTH-1)/2) to +((LENGTH-1)/2).
 For instance a LENGTH of 9 produces:
@@ -118,23 +127,25 @@ color1 and color2."
               'display image))
 
 (defun telephone-line-row-pattern (fill total)
-  "Make a list of percentages (0 to 1), with FILL 0s out of TOTAL 1s, with a non-integer in between."
+  "Make a list of percentages (0 to 1).
+With FILL 0s out of TOTAL 1s, with a non-integer in between."
   (seq-let (intfill rem) (cl-floor fill)
     (nconc
-     (make-list intfill 0) ;Left fill
+     (make-list intfill 0)              ;Left fill
      (when (< intfill total)
-       (cons (- 1 rem) ;AA pixel
+       (cons (- 1 rem)                              ;AA pixel
              (make-list (- total intfill 1) 1)))))) ;Right gap
 
 (defun telephone-line-row-pattern-hollow (padding total)
-  "Make a list of percentages (0 to 1), with a non-integer positioned PADDING places in out of TOTAL places."
+  "Make a list of percentages (0 to 1).
+With a non-integer positioned PADDING places in out of TOTAL places."
   (seq-let (intpadding rem) (cl-floor padding)
     (nconc
-     (make-list intpadding 1) ;Left gap
+     (make-list intpadding 1)           ;Left gap
      (when (< intpadding total)
-       (list rem)) ;Left AA pixel
+       (list rem))                      ;Left AA pixel
      (when (< (1+ intpadding) total)
-       (cons (- 1 rem)  ;Right AA pixel
+       (cons (- 1 rem)                                 ;Right AA pixel
              (make-list (- total intpadding 2) 1)))))) ;Right gap
 
 (defun telephone-line-row-pattern-binary (fill total)
@@ -159,17 +170,19 @@ color1 and color2."
    (alt-separator :initarg :alt-separator)
    (image-cache :initform (make-hash-table :test 'equal :size 10))))
 
-(cl-defmethod telephone-line-separator-height ((obj telephone-line-separator))
+(cl-defmethod telephone-line-separator-height ((_ telephone-line-separator))
   (or telephone-line-height (frame-char-height)))
 
-(cl-defmethod telephone-line-separator-height ((obj telephone-line-unicode-separator))
+(cl-defmethod telephone-line-separator-height
+    ((_ telephone-line-unicode-separator))
   (frame-char-height))
 
 (cl-defmethod telephone-line-separator-width ((obj telephone-line-separator))
   (or (oref obj forced-width)
       (ceiling (telephone-line-separator-height obj) 2)))
 
-(cl-defmethod telephone-line-separator-width ((obj telephone-line-unicode-separator))
+(cl-defmethod telephone-line-separator-width
+    ((_ telephone-line-unicode-separator))
   (frame-char-width))
 
 (defclass telephone-line-subseparator (telephone-line-separator)
@@ -179,7 +192,8 @@ color1 and color2."
 (defclass telephone-line-nil-separator (telephone-line-separator) ())
 
 (cl-defmethod telephone-line-separator-create-body ((obj telephone-line-separator))
-  "Create a bytestring of a PBM image body of dimensions WIDTH and HEIGHT, and shape created from AXIS-FUNC and PATTERN-FUNC."
+  "Create a bytestring of a PBM image body of dimensions WIDTH and HEIGHT.
+A shape created from AXIS-FUNC and PATTERN-FUNC."
   (let* ((height (telephone-line-separator-height obj))
          (width (telephone-line-separator-width obj))
          (normalized-axis (telephone-line--normalize-axis
@@ -246,26 +260,23 @@ If it doesn't exist, create and cache it."
         (telephone-line-separator-render-image obj fg-color bg-color)
       (telephone-line-separator-render (oref obj alt-separator) fg-color bg-color))))
 
-(cl-defmethod telephone-line-separator-render ((obj telephone-line-nil-separator) foreground background)
-  nil)
-
 (cl-defmethod telephone-line-separator-clear-cache ((obj telephone-line-separator))
   (clrhash (oref obj image-cache)))
 
 ;;;###autoload
 (defmacro telephone-line-defsegment* (name &rest body)
-  "Define NAME as a segment function.
+  "Define NAME as a segment function with BODY.
 
 Does not check if segment is empty; will always display on non-nil result."
   (declare (doc-string 3) (indent defun))
   `(defun ,name
-     ,@(butlast body)
+       ,@(butlast body)
      (lambda (face)
        ,(car (last body)))))
 
 ;;;###autoload
 (defmacro telephone-line-defsegment (name &rest body)
-  "Define NAME as a segment function.
+  "Define NAME as a segment function with BODY.
 
 Empty strings will not render."
   (declare (doc-string 3) (indent defun))
@@ -275,7 +286,8 @@ Empty strings will not render."
 
 ;;;###autoload
 (defun telephone-line-raw (str &optional preformatted)
-  "Conditionally render STR as mode-line data, or just verify output if not PREFORMATTED.
+  "Conditionally render STR as mode-line data.
+Or just verify output if not PREFORMATTED.
 Return nil for blank/empty strings."
   (let ((trimmed-str (string-trim (format-mode-line str))))
     (unless (seq-empty-p trimmed-str)
