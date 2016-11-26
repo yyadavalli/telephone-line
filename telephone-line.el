@@ -41,12 +41,13 @@
   :group 'mode-line)
 
 (defface telephone-line-accent-active
-  '((t (:foreground "white" :background "grey22" :inherit mode-line)))
+  '((t (:foreground "#F9F5D7" :background "#504945" :inherit mode-line)))
   "Accent face for mode-line."
   :group 'telephone-line)
 
 (defface telephone-line-accent-inactive
-  '((t (:foreground "white" :background "grey11" :inherit mode-line-inactive)))
+  '((t (:foreground "#A89984"
+        :background "#3C3836" :inherit mode-line-inactive)))
   "Accent face for inactive mode-line."
   :group 'telephone-line)
 
@@ -71,43 +72,58 @@
   :group 'telephone-line)
 
 (defface telephone-line-evil
-  '((t (:foreground "white" :weight bold :inherit mode-line)))
+  '((t (:foreground "#1D2021" :weight bold :inherit mode-line)))
   "Meta-face used for property inheritance on all telephone-line-evil faces."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-insert
-  '((t (:background "forest green" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Insert state."
+  '((t (:background "#83A598" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Insert state (blue)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-normal
-  '((t (:background "red3" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Normal state."
+  '((t (:background "#BDAE93" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Normal state (light3)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-visual
-  '((t (:background "dark orange" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Visual{,-Block,-Line} state."
+  '((t (:background "#FABD2F" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Visual{,-Block,-Line} state (yellow)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-replace
-  '((t (:background "black" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Replace state."
+  '((t (:background "#AF3A03" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Replace state (purple)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-motion
-  '((t (:background "dark blue" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Motion state."
+  '((t (:background "#8EC07C" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Motion state (aqua)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-operator
-  '((t (:background "violet" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Operator state."
+  '((t (:background "#B8BB26" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Operator state (green)."
+  :group 'telephone-line-evil)
+
+(defface telephone-line-evil-evilified
+  '((t (:background "#D65D0E" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Emacs state (orange)."
+  :group 'telephone-line-evil)
+
+(defface telephone-line-evil-lispy
+  '((t (:background "#D3869B" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in lispy state (light1)."
+  :group 'telephone-line-evil)
+
+(defface telephone-line-evil-evilified
+  '((t (:background "#D65D0E" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Emacs state."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-emacs
-  '((t (:background "dark violet" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Emacs state."
+  '((t (:background "#FB4933" :inherit telephone-line-evil)))
+  "Face used in evil color-coded segments when in Emacs state (red)."
   :group 'telephone-line-evil)
 
 (defcustom telephone-line-faces
@@ -240,6 +256,7 @@ Secondary separators do not incur a background color change."
        cur-color-sym))))
 
 (defun telephone-line-propertize-segment (pred face segment)
+  "When PRED is satisfied propertize FACE and SEGMENT."
   (unless (seq-empty-p (string-trim (format-mode-line segment)))
     (if (or pred (not (telephone-line-selected-window-active)))
         `(:propertize (" " ,segment " ") face ,face)
@@ -247,6 +264,7 @@ Secondary separators do not incur a background color change."
 
 ;;TODO: Clean this up
 (defun telephone-line-add-subseparators (subsegments sep-func color-sym)
+  "SUBSEGMENTS SEP-FUNC COLOR-SYM."
   (let* ((cur-face (telephone-line-face-map color-sym))
          (subseparator-foreground (telephone-line-subseparator-foreground color-sym))
          (subseparator (telephone-line-separator-render sep-func cur-face subseparator-foreground)))
