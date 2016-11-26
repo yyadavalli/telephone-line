@@ -344,11 +344,11 @@ separators, as they are conditional, are evaluated on-the-fly."
 
 (defcustom telephone-line-lhs
   '((evil   . (telephone-line-evil-tag-segment))
-    (accent . (telephone-line-vc-segment
-               telephone-line-erc-modified-channels-segment
+    (accent . (telephone-line-buffer-name-only-segment
+               telephone-line-major-mode-segment
                telephone-line-process-segment))
-    (nil    . (telephone-line-projectile-segment
-               telephone-line-buffer-segment)))
+    (nil    . (telephone-line-magit-branch-segment
+               telephone-line-flycheck-segment)))
   "Left hand side segment alist."
   :type '(alist :key-type segment-color :value-type subsegment-list)
   :group 'telephone-line)
@@ -366,9 +366,8 @@ separators, as they are conditional, are evaluated on-the-fly."
   :group 'telephone-line)
 
 (defcustom telephone-line-rhs
-  '((nil    . (telephone-line-flycheck-segment
-               telephone-line-misc-info-segment))
-    (accent . (telephone-line-major-mode-segment))
+  '((nil    . (telephone-line-misc-info-segment))
+    (accent . (telephone-line-minor-mode-segment))
     (evil   . (telephone-line-airline-position-segment)))
   "Right hand side segment alist."
   :type '(alist :key-type segment-color :value-type subsegment-list)
