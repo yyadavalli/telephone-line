@@ -27,6 +27,11 @@
 (telephone-line-defsegment* telephone-line-vc-segment ()
   (telephone-line-raw vc-mode t))
 
+(telephone-line-defsegment telephone-line-magit-branch-segment ()
+  (when (and (fboundp 'magit-get-current-branch)
+             (magit-get-current-branch))
+    (telephone-line-raw (concat " " (magit-get-current-branch)))))
+
 (telephone-line-defsegment telephone-line-process-segment ()
   mode-line-process)
 
@@ -111,6 +116,9 @@ Adapted from doom-modeline."
 
 (telephone-line-defsegment telephone-line-narrow-segment ()
   "%n")
+
+(telephone-line-defsegment* telephone-line-buffer-name-only-segment ()
+  `("" ,(telephone-line-raw mode-line-buffer-identification t)))
 
 (telephone-line-defsegment* telephone-line-major-mode-segment ()
   (let ((recursive-edit-help-echo "Recursive edit, type C-M-c to get out"))
