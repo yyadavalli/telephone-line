@@ -21,6 +21,7 @@
 ;; To create your own, look at the functions defined in telephone-line-utils.el
 
 ;;; Code:
+(declare-function icons-in-terminal-icon-for-buffer "icons-in-terminal")
 (declare-function evil-visual-state-p "evil")
 (declare-function flycheck-count-errors "flycheck")
 (declare-function flycheck-list-errors "flycheck")
@@ -132,6 +133,9 @@ Adapted from doom-modeline."
 
 (telephone-line-defsegment* telephone-line-buffer-name-only-segment ()
   `("" ,(telephone-line-raw mode-line-buffer-identification t)))
+
+(telephone-line-defsegment* telephone-line-mode-icon-segment ()
+  (icons-in-terminal-icon-for-buffer))
 
 (telephone-line-defsegment* telephone-line-major-mode-segment ()
   (let ((recursive-edit-help-echo "Recursive edit, type C-M-c to get out"))

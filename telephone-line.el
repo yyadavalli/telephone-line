@@ -350,8 +350,8 @@ separators, as they are conditional, are evaluated on-the-fly."
 
 (defcustom telephone-line-lhs
   '((evil   . (telephone-line-evil-tag-segment))
-    (accent . (telephone-line-buffer-name-only-segment
-               telephone-line-major-mode-segment
+    (accent . (telephone-line-mode-icon-segment
+               telephone-line-buffer-name-only-segment
                telephone-line-process-segment))
     (nil    . (telephone-line-magit-branch-segment
                telephone-line-flycheck-segment)))
