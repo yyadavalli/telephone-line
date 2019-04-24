@@ -25,6 +25,7 @@
 (declare-function evil-visual-state-p "evil")
 (declare-function flycheck-count-errors "flycheck")
 (declare-function flycheck-list-errors "flycheck")
+(declare-function flymake--mode-line-format "flymake")
 (declare-function nyan-create "nyan-mode")
 (declare-function winum-get-number "winum")
 (declare-function winum-get-number-string "winum")
@@ -42,7 +43,8 @@
   (telephone-line-raw vc-mode t))
 
 (telephone-line-defsegment telephone-line-magit-branch-segment ()
-  (when (and (fboundp 'magit-get-current-branch)
+  (when (and (buffer-file-name (current-buffer))
+             (fboundp 'magit-get-current-branch)
              (magit-get-current-branch))
     (telephone-line-raw (concat " " (magit-get-current-branch)))))
 
@@ -289,6 +291,11 @@ Configure the face group telephone-line-evil to change the colors per-mode."
       (if telephone-line-evil-use-short-tag
           (seq-take tag 2)
         tag))))
+
+(telephone-line-defsegment telephone-line-flymake-segment ()
+  "Displays current checker state."
+  (when (bound-and-true-p flymake-mode)
+    (flymake--mode-line-format)))
 
 (telephone-line-defsegment telephone-line-flycheck-segment ()
   "Displays current checker state."
