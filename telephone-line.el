@@ -44,13 +44,13 @@
   :group 'mode-line)
 
 (defface telephone-line-accent-active
-  '((t (:foreground "#F9F5D7" :background "#504945" :inherit mode-line)))
+  '((t (:foreground "#C5C8C6" :background "#3F4040" :inherit mode-line)))
   "Accent face for mode-line."
   :group 'telephone-line)
 
 (defface telephone-line-accent-inactive
-  '((t (:foreground "#A89984"
-        :background "#3C3836" :inherit mode-line-inactive)))
+  '((t (:foreground "#5A5B5A"
+        :background "#212122" :inherit mode-line-inactive)))
   "Accent face for inactive mode-line."
   :group 'telephone-line)
 
@@ -80,52 +80,37 @@
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-insert
-  '((t (:background "#83A598" :inherit telephone-line-evil)))
+  '((t (:background "#B5BD68" :inherit telephone-line-evil)))
   "Face used in evil color-coded segments when in Insert state (blue)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-normal
-  '((t (:background "#BDAE93" :inherit telephone-line-evil)))
+  '((t (:background "#81A2BE" :inherit telephone-line-evil)))
   "Face used in evil color-coded segments when in Normal state (light3)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-visual
-  '((t (:background "#FABD2F" :inherit telephone-line-evil)))
+  '((t (:background "#F0C674" :inherit telephone-line-evil)))
   "Face used in evil color-coded segments when in Visual states (yellow)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-replace
-  '((t (:background "#AF3A03" :inherit telephone-line-evil)))
+  '((t (:background "#B394BB" :inherit telephone-line-evil)))
   "Face used in evil color-coded segments when in Replace state (purple)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-motion
-  '((t (:background "#8EC07C" :inherit telephone-line-evil)))
+  '((t (:background "#41728E" :inherit telephone-line-evil)))
   "Face used in evil color-coded segments when in Motion state (aqua)."
   :group 'telephone-line-evil)
 
 (defface telephone-line-evil-operator
-  '((t (:background "#B8BB26" :inherit telephone-line-evil)))
+  '((t (:background "#B5BD68" :inherit telephone-line-evil)))
   "Face used in evil color-coded segments when in Operator state (green)."
   :group 'telephone-line-evil)
 
-(defface telephone-line-evil-evilified
-  '((t (:background "#D65D0E" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Emacs state (orange)."
-  :group 'telephone-line-evil)
-
-(defface telephone-line-evil-lispy
-  '((t (:background "#D3869B" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in lispy state (light1)."
-  :group 'telephone-line-evil)
-
-(defface telephone-line-evil-evilified
-  '((t (:background "#D65D0E" :inherit telephone-line-evil)))
-  "Face used in evil color-coded segments when in Emacs state."
-  :group 'telephone-line-evil)
-
 (defface telephone-line-evil-emacs
-  '((t (:background "#FB4933" :inherit telephone-line-evil)))
+  '((t (:background "#CC6666" :inherit telephone-line-evil)))
   "Face used in evil color-coded segments when in Emacs state (red)."
   :group 'telephone-line-evil)
 
